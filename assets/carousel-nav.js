@@ -27,7 +27,7 @@
     
     // Create left arrow button
     const btnPrev = document.createElement('button');
-    btnPrev.innerHTML = '<span class="carousel-arrow-text"><img src="/assets/images/icons/BOTÓN FLECHA.png" style="position: relative; top: -1.5px; width: 20px; transform: rotate(90deg); cursor: pointer; transition: linear 100ms;" id="dd-o-a-2"></span>'; // left chevron
+    btnPrev.innerHTML = '<span class="carousel-arrow-text"><img src="/assets/images/icons/botonflecha.png" style="position: relative; top: -1.5px; width: 20px; transform: rotate(90deg); cursor: pointer; transition: linear 100ms;" id="dd-o-a-2"></span>'; // left chevron
     btnPrev.style.cssText = `
       background: none;
       border: none;
@@ -44,7 +44,7 @@
     
     // Create right arrow button
     const btnNext = document.createElement('button');
-    btnNext.innerHTML = '<span class="carousel-arrow-text"><span class="carousel-arrow-text"><img src="/assets/images/icons/BOTÓN FLECHA.png" style="position: relative; top: -1.5px; width: 20px; transform: rotate(-90deg); cursor: pointer; transition: linear 100ms;" id="dd-o-a-2"></span></span>'; // right chevron
+    btnNext.innerHTML = '<span class="carousel-arrow-text"><span class="carousel-arrow-text"><img src="/assets/images/icons/botonflecha.png" style="position: relative; top: -1.5px; width: 20px; transform: rotate(-90deg); cursor: pointer; transition: linear 100ms;" id="dd-o-a-2"></span></span>'; // right chevron
     btnNext.style.cssText = `
       background: none;
       border: none;
