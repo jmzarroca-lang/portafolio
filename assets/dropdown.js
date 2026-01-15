@@ -22,10 +22,10 @@
   if (!dd3.hasAttribute('tabindex')) dd3.setAttribute('tabindex', '0');
   if (!dd4.hasAttribute('tabindex')) dd4.setAttribute('tabindex', '0');
 
-  let count = 1;
-  let count2 = 1;
-  let count3 = 1;
-  let count4 = 1;
+  let count = 0;
+  let count2 = 0;
+  let count3 = 0;
+  let count4 = 0;
 
   function applyVisibility() {
     if (!t1) return;
@@ -74,6 +74,11 @@
     count4 += 1;
     applyVisibility4();
   }
+
+  applyVisibility();
+  applyVisibility2();
+  applyVisibility3();
+  applyVisibility4();
 
   dd1.addEventListener('click', handler);
   dd1.addEventListener('keydown', (e) => {
