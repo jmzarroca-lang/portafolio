@@ -30,8 +30,8 @@
   function applyVisibility() {
     if (!t1) return;
     const isOdd = count % 2 === 1;
-    t1.style.display = isOdd ? 'none' : '';
-    arrow1.style.transform = isOdd ? 'rotate(-90deg)' : '';
+    t1.style.display = isOdd ? '' : 'none';
+    arrow1.style.transform = isOdd ? '' : 'rotate(-90deg)';
   }
 
   function handler() {
@@ -42,8 +42,8 @@
   function applyVisibility2() {
     if (!t2) return;
     const isOdd = count2 % 2 === 1;
-    t2.style.display = isOdd ? 'none' : '';
-    arrow2.style.transform = isOdd ? 'rotate(-90deg)' : '';
+    t2.style.display = isOdd ? '' : 'none';
+    arrow2.style.transform = isOdd ? '' : 'rotate(-90deg)';
   }
 
   function handler2() {
@@ -54,8 +54,8 @@
   function applyVisibility3() {
     if (!t3) return;
     const isOdd = count3 % 2 === 1;
-    t3.style.display = isOdd ? 'none' : '';
-    arrow3.style.transform = isOdd ? 'rotate(-90deg)' : '';
+    t3.style.display = isOdd ? '' : 'none';
+    arrow3.style.transform = isOdd ? '' : 'rotate(-90deg)';
   }
 
   function handler3() {
@@ -66,8 +66,8 @@
   function applyVisibility4() {
     if (!t4) return;
     const isOdd = count4 % 2 === 1;
-    t4.style.display = isOdd ? 'none' : '';
-    arrow4.style.transform = isOdd ? 'rotate(-90deg)' : '';
+    t4.style.display = isOdd ? '' : 'none';
+    arrow4.style.transform = isOdd ? '' : 'rotate(-90deg)';
   }
 
   function handler4() {
