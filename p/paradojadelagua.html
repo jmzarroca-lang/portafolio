@@ -6,6 +6,20 @@
         <link rel="stylesheet" href="/style.css">
         <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.png">
         <title>Portafolio</title>   
+        <!-- ESTO ES NUEVO - COPIAR DESDE AQUÍ -->
+        <style>
+            .carousel {
+                display: flex;
+                overflow-x: auto;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .carousel::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+        <!-- HASTA AQUÍ -->
     </head>
     <body>
         <center>
@@ -164,7 +178,9 @@
                 <div style="clear: both; height: 25px;"></div>
             </div>
         </center>
+        <!-- REEMPLAZAR EL SCRIPT EXISTENTE CON ESTE NUEVO -->
         <script>
+            // Código del menú móvil (el que ya tenías)
             document.querySelector("#mobile-menu-t").addEventListener("click", () => {
                 document.querySelector("#menu").style.display = "block";
                 document.querySelector("#mobile-menu-c").style.display = "block";
@@ -176,7 +192,45 @@
                 document.querySelector("#mobile-menu-c").style.display = "none";
                 document.querySelector("#mobile-menu-t").style.display = "block";
             });
+
+            // NUEVO CÓDIGO PARA EL CARRUSEL
+            document.addEventListener('DOMContentLoaded', function() {
+                // Seleccionar todos los carruseles
+                const carousels = document.querySelectorAll('.carousel');
+                
+                carousels.forEach(carousel => {
+                    // Hacer que el scroll vertical mueva el carrusel horizontalmente
+                    carousel.addEventListener('wheel', function(e) {
+                        // Prevenir que la página se desplace
+                        e.preventDefault();
+                        
+                        // Mover el carrusel con el scroll vertical
+                        carousel.scrollLeft += e.deltaY;
+                    }, { passive: false });
+                });
+
+                // Mostrar/ocultar versión desktop/mobile automáticamente
+                function ajustarParaDispositivo() {
+                    const archivoDesktop = document.getElementById('archivo-desktop');
+                    const archivoMobile = document.getElementById('archivo-mobile');
+                    
+                    if (window.innerWidth <= 768) {
+                        // Mobile
+                        if (archivoDesktop) archivoDesktop.style.display = 'none';
+                        if (archivoMobile) archivoMobile.style.display = 'block';
+                    } else {
+                        // Desktop
+                        if (archivoDesktop) archivoDesktop.style.display = 'block';
+                        if (archivoMobile) archivoMobile.style.display = 'none';
+                    }
+                }
+
+                // Ajustar al cargar la página y al cambiar tamaño
+                ajustarParaDispositivo();
+                window.addEventListener('resize', ajustarParaDispositivo);
+            });
         </script>
+        <!-- Mantener esta línea si carousel-nav.js tiene otras funciones -->
         <script src="/assets/carousel-nav.js" defer></script>
     </body>
 </html>
