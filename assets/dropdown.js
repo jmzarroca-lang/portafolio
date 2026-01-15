@@ -22,10 +22,10 @@
   if (!dd3.hasAttribute('tabindex')) dd3.setAttribute('tabindex', '0');
   if (!dd4.hasAttribute('tabindex')) dd4.setAttribute('tabindex', '0');
 
-  let count = 0;
-  let count2 = 0;
-  let count3 = 0;
-  let count4 = 0;
+  let count = 1;
+  let count2 = 1;
+  let count3 = 1;
+  let count4 = 1;
 
   function applyVisibility() {
     if (!t1) return;
