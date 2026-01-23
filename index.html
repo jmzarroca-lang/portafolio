@@ -169,46 +169,6 @@
                 document.querySelector("#menu").style.display = "none";
                 document.querySelector("#mobile-menu-c").style.display = "none";
                 document.querySelector("#mobile-menu-t").style.display = "block";
-            });
-        </script>
-        
-        <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const carousel = document.querySelector(".carousel");
-    if (!carousel) return;
-
-    const items = carousel.children;
-    let index = 0;
-    let bloqueado = false;
-
-    function scrollToIndex() {
-        const item = items[index];
-        carousel.scrollTo({
-            left: item.offsetLeft - 20,
-            behavior: "smooth"
-        });
-    }
-
-    carousel.addEventListener("wheel", function (event) {
-        event.preventDefault();
-        if (bloqueado) return;
-
-        bloqueado = true;
-
-        if (event.deltaY > 0 && index < items.length - 1) {
-            index++;
-        } else if (event.deltaY < 0 && index > 0) {
-            index--;
-        }
-
-        scrollToIndex();
-
-        setTimeout(() => {
-            bloqueado = false;
-        }, 500);
-    }, { passive: false });
-});
-</script>
-        
+            });       
     </body>
 </html>
