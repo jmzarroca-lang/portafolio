@@ -173,18 +173,42 @@
         </script>
         
         <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const carousel = document.querySelector(".carousel");
+document.addEventListener("DOMContentLoaded", function () {
+    const carousel = document.querySelector(".carousel");
+    if (!carousel) return;
 
-        if (!carousel) return;
+    const items = carousel.children;
+    let index = 0;
+    let bloqueado = false;
 
-        carousel.addEventListener("wheel", function (event) {
-            event.preventDefault();
+    function scrollToIndex() {
+        const item = items[index];
+        carousel.scrollTo({
+            left: item.offsetLeft - 20,
+            behavior: "smooth"
+        });
+    }
 
-            const velocidad = 3;
-            carousel.scrollLeft += event.deltaY * velocidad;
-        }, { passive: false });
-    });
+    carousel.addEventListener("wheel", function (event) {
+        event.preventDefault();
+        if (bloqueado) return;
+
+        bloqueado = true;
+
+        if (event.deltaY > 0 && index < items.length - 1) {
+            index++;
+        } else if (event.deltaY < 0 && index > 0) {
+            index--;
+        }
+
+        scrollToIndex();
+
+        setTimeout(() => {
+            bloqueado = false;
+        }, 500);
+    }, { passive: false });
+});
 </script>
+        
     </body>
 </html>
