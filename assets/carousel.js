@@ -66,7 +66,41 @@
 
     carousel.addEventListener('mouseenter', () => { isPaused = true; });
     carousel.addEventListener('mouseleave', () => { isPaused = false; });
-    carousel.addEventListener('wheel', () => pauseForUserInteraction(), { passive: true });
+    let wheelAccumulator = 0;
+const WHEEL_THRESHOLD = 100;
+
+carousel.addEventListener('wheel', (event) => {
+    pauseForUserInteraction();
+
+    wheelAccumulator += event.deltaY;
+
+    if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return;
+
+    const direction = wheelAccumulator > 0 ? 1 : -1;
+    wheelAccumulator = 0;
+
+    const itemWidth = items[0].offsetWidth;
+    currentIndex += direction;
+
+    if (currentIndex < 0) {
+        currentIndex = originalItemsCount - 1;
+        carousel.scrollTo({
+            left: currentIndex * itemWidth,
+            behavior: 'instant'
+        });
+    } else if (currentIndex >= originalItemsCount) {
+        currentIndex = 0;
+        carousel.scrollTo({
+            left: 0,
+            behavior: 'instant'
+        });
+    } else {
+        carousel.scrollTo({
+            left: currentIndex * itemWidth,
+            behavior: 'smooth'
+        });
+    }
+}, { passive: true });
     carousel.addEventListener('touchstart', () => {
         if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
         isPaused = true;
