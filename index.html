@@ -173,12 +173,18 @@
         </script>
         
         <script>
-    const carousel = document.querySelector(".carousel");
+    document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.querySelector(".carousel");
 
-    carousel.addEventListener("wheel", function (event) {
-        event.preventDefault();
-        carousel.scrollLeft += event.deltaY;
-    }, { passive: false });
-        </script>
+        if (!carousel) return;
+
+        carousel.addEventListener("wheel", function (event) {
+            event.preventDefault();
+
+            const velocidad = 3;
+            carousel.scrollLeft += event.deltaY * velocidad;
+        }, { passive: false });
+    });
+</script>
     </body>
 </html>
