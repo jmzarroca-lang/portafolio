@@ -171,5 +171,14 @@
                 document.querySelector("#mobile-menu-t").style.display = "block";
             });
         </script>
+        
+        <script>
+    const carousel = document.querySelector(".carousel");
+
+    carousel.addEventListener("wheel", function (event) {
+        event.preventDefault();
+        carousel.scrollLeft += event.deltaY;
+    }, { passive: false });
+        </script>
     </body>
 </html>
