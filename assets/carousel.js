@@ -4,49 +4,51 @@
 
     const INTERVAL = 5000;
     let timer = null;
-    let isPaused = false;
-    let scrollPauseTimeout = null;
+
     let items = Array.from(carousel.querySelectorAll('.project-a')).filter(e => e instanceof HTMLElement);
     if (items.length === 0) items = Array.from(carousel.children).filter(e => e instanceof HTMLElement);
 
-    // Clone items to create infinite scroll
     const originalItemsCount = items.length;
-    const clonedItems = [...items];
-    clonedItems.forEach(item => {
+
+    // Clonar items para loop infinito
+    items.forEach(item => {
         const clone = item.cloneNode(true);
         carousel.appendChild(clone);
-        items.push(clone);
     });
 
+    // Recalcular lista total
+    items = Array.from(carousel.children).filter(e => e instanceof HTMLElement);
+
     let currentIndex = 0;
+    let wheelAccumulator = 0;
+    const WHEEL_THRESHOLD = 100;
+
+    function scrollToIndex(smooth = true) {
+        const itemWidth = items[0].offsetWidth;
+
+        carousel.scrollTo({
+            left: currentIndex * itemWidth,
+            behavior: smooth ? 'smooth' : 'instant'
+        });
+
+        // Normalización invisible (solo hacia adelante)
+        if (currentIndex >= originalItemsCount * 2) {
+            currentIndex -= originalItemsCount;
+            carousel.scrollTo({
+                left: currentIndex * itemWidth,
+                behavior: 'instant'
+            });
+        }
+    }
 
     function scrollToNextItem() {
         currentIndex++;
-        const itemWidth = items[0].offsetWidth;
-        carousel.scrollTo({
-            left: currentIndex * itemWidth,
-            behavior: 'smooth'
-        });
-
-        // Reset scroll position when we've scrolled through all original items
-        if (currentIndex >= originalItemsCount) {
-            setTimeout(() => {
-                currentIndex = 0;
-                carousel.scrollTo({
-                    left: 0,
-                    behavior: 'instant'
-                });
-            }, 500); // Match the smooth scroll duration
-        }
+        scrollToIndex(true);
     }
 
     function startTimer() {
         stopTimer();
-        timer = setInterval(() => {
-            if (!isPaused) {
-                scrollToNextItem();
-            }
-        }, INTERVAL);
+        timer = setInterval(scrollToNextItem, INTERVAL);
     }
 
     function stopTimer() {
@@ -56,56 +58,28 @@
         }
     }
 
-    function pauseForUserInteraction(ms = 5000) {
-        isPaused = true;
-        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
-        scrollPauseTimeout = setTimeout(() => {
-            isPaused = false;
-        }, ms);
-    }
-
-    carousel.addEventListener('mouseenter', () => { isPaused = true; });
-    carousel.addEventListener('mouseleave', () => { isPaused = false; });
-    let wheelAccumulator = 0;
-const WHEEL_THRESHOLD = 100;
-
-carousel.addEventListener('wheel', (event) => {
-    pauseForUserInteraction();
-
-    wheelAccumulator += event.deltaY;
-
-    if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return;
-
-    const direction = wheelAccumulator > 0 ? 1 : -1;
-    wheelAccumulator = 0;
-
-    const itemWidth = items[0].offsetWidth;
-    currentIndex += direction;
-
-    if (currentIndex < 0) {
-        currentIndex = originalItemsCount - 1;
-        carousel.scrollTo({
-            left: currentIndex * itemWidth,
-            behavior: 'instant'
-        });
-    } else if (currentIndex >= originalItemsCount) {
-        currentIndex = 0;
-        carousel.scrollTo({
-            left: 0,
-            behavior: 'instant'
-        });
-    } else {
-        carousel.scrollTo({
-            left: currentIndex * itemWidth,
-            behavior: 'smooth'
-        });
-    }
-}, { passive: true });
-    carousel.addEventListener('touchstart', () => {
-        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
-        isPaused = true;
-    }, { passive: true });
-    carousel.addEventListener('touchend', () => pauseForUserInteraction(), { passive: true });
-
+    // Autoplay
     startTimer();
+
+    // Rueda del mouse (avance continuo por pasos)
+    carousel.addEventListener('wheel', (event) => {
+        stopTimer(); // el usuario manda
+        wheelAccumulator += event.deltaY;
+
+        if (Math.abs(wheelAccumulator) < WHEEL_THRESHOLD) return;
+
+        const direction = wheelAccumulator > 0 ? 1 : -1;
+        wheelAccumulator = 0;
+
+        if (direction > 0) {
+            currentIndex++;
+            scrollToIndex(true);
+        }
+    }, { passive: true });
+
+    // Touch (móvil)
+    carousel.addEventListener('touchstart', () => {
+        stopTimer();
+    }, { passive: true });
+
 })();
