@@ -2,56 +2,76 @@
     const carousel = document.querySelector('.carousel');
     if (!carousel) return;
 
-    const SPEED_AUTOPLAY = 0.4; // px por frame
-    let autoplay = true;
-    let rafId = null;
-    let pauseTimeout = null;
+    const INTERVAL = 5000;
+    let timer = null;
+    let isPaused = false;
+    let scrollPauseTimeout = null;
+    let items = Array.from(carousel.querySelectorAll('.project-a')).filter(e => e instanceof HTMLElement);
+    if (items.length === 0) items = Array.from(carousel.children).filter(e => e instanceof HTMLElement);
 
-    // Duplicar contenido
-    const items = Array.from(carousel.children);
-    items.forEach(item => {
-        carousel.appendChild(item.cloneNode(true));
+    // Clone items to create infinite scroll
+    const originalItemsCount = items.length;
+    const clonedItems = [...items];
+    clonedItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        carousel.appendChild(clone);
+        items.push(clone);
     });
 
-    const halfScrollWidth = carousel.scrollWidth / 2;
+    let currentIndex = 0;
 
-    function loop() {
-        if (autoplay) {
-            carousel.scrollLeft += SPEED_AUTOPLAY;
-            if (carousel.scrollLeft >= halfScrollWidth) {
-                carousel.scrollLeft -= halfScrollWidth;
-            }
+    function scrollToNextItem() {
+        currentIndex++;
+        const itemWidth = items[0].offsetWidth;
+        carousel.scrollTo({
+            left: currentIndex * itemWidth,
+            behavior: 'smooth'
+        });
+
+        // Reset scroll position when we've scrolled through all original items
+        if (currentIndex >= originalItemsCount) {
+            setTimeout(() => {
+                currentIndex = 0;
+                carousel.scrollTo({
+                    left: 0,
+                    behavior: 'instant'
+                });
+            }, 500);
         }
-        rafId = requestAnimationFrame(loop);
     }
 
-    loop();
+    function startTimer() {
+        stopTimer();
+        timer = setInterval(() => {
+            if (!isPaused) {
+                scrollToNextItem();
+            }
+        }, INTERVAL);
+    }
 
-    function pauseAutoplay(ms = 10000) {
-        autoplay = false;
-        clearTimeout(pauseTimeout);
-        pauseTimeout = setTimeout(() => {
-            autoplay = true;
+    function stopTimer() {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+    }
+
+    function pauseForUserInteraction(ms = 5000) {
+        isPaused = true;
+        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
+        scrollPauseTimeout = setTimeout(() => {
+            isPaused = false;
         }, ms);
     }
 
-    // Wheel = avance continuo (no por pasos)
-    carousel.addEventListener('wheel', (e) => {
-        pauseAutoplay();
-        carousel.scrollLeft += e.deltaY;
-
-        if (carousel.scrollLeft >= halfScrollWidth) {
-            carousel.scrollLeft -= halfScrollWidth;
-        }
-        if (carousel.scrollLeft < 0) {
-            carousel.scrollLeft += halfScrollWidth;
-        }
+    carousel.addEventListener('mouseenter', () => { isPaused = true; });
+    carousel.addEventListener('mouseleave', () => { isPaused = false; });
+    carousel.addEventListener('wheel', () => pauseForUserInteraction(), { passive: true });
+    carousel.addEventListener('touchstart', () => {
+        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
+        isPaused = true;
     }, { passive: true });
+    carousel.addEventListener('touchend', () => pauseForUserInteraction(), { passive: true });
 
-    // Hover pausa
-    carousel.addEventListener('mouseenter', () => autoplay = false);
-    carousel.addEventListener('mouseleave', () => autoplay = true);
-
-    // Touch
-    carousel.addEventListener('touchstart', () => pauseAutoplay());
+    startTimer();
 })();
