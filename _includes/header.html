@@ -1,0 +1,35 @@
+<div class="site-header">
+  <div class="site-header__inner">
+
+    <!-- Logo izquierda -->
+    <div class="site-header__logo-wrap">
+      <a href="/" class="site-header__logo-text">zarroca</a>
+    </div>
+
+    <!-- Nav derecha (desktop) -->
+    <div class="site-header__nav" id="shortcuts">
+      <a href="/archivo" class="nav project-a" {% if page.url contains 'archivo' %}style="color: #cd5655;"{% endif %}>
+        <span class="a-span">Archivo</span>
+      </a>
+      <a href="/perfil" class="nav project-a" {% if page.url contains 'perfil' %}style="color: #cd5655;"{% endif %}>
+        <span class="a-span">Perfil</span>
+      </a>
+      <a href="/contacto" class="nav project-a" {% if page.url contains 'contacto' %}style="color: #cd5655;"{% endif %}>
+        <span class="a-span">Contacto</span>
+      </a>
+      <img src="/assets/images/icons/LOGO BOLA.png" alt="Inicio" class="site-header__bola">
+    </div>
+
+    <!-- Botón menú móvil -->
+    <img id="mobile-menu-t" src="/assets/images/icons/botonflecha.png" alt="Abrir menú" class="mobile-menu-btn">
+    <img id="mobile-menu-c" src="/assets/images/icons/botontache.png" alt="Cerrar menú" class="mobile-menu-btn" style="display: none;">
+
+  </div>
+
+  <!-- Menú móvil desplegable -->
+  <div id="menu" class="mobile-menu" style="display: none;">
+    <a href="/archivo" class="nav-mobile">Archivo</a>
+    <a href="/perfil" class="nav-mobile">Perfil</a>
+    <a href="/contacto" class="nav-mobile">Contacto</a>
+  </div>
+</div>

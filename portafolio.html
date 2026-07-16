@@ -1,0 +1,30 @@
+---
+layout: base
+title: Portafolio
+body_class: pagina-portafolio
+css_extra: portafolio.css
+js_extra: portafolio.js
+---
+
+<div class="carousel">
+  {% assign proyectos_portafolio = site.projects | where: "portafolio", true | sort: "orden" %}
+  {% for proyecto in proyectos_portafolio %}
+  <a class="project-a" href="{{ proyecto.url }}">
+    <div class="carousel__item reveal" style="animation-delay: {{ forloop.index0 | times: 0.25 }}s;">
+      <span class="carousel__meta">
+        <span class="a-span">{{ proyecto.title }}</span>
+        <br>
+        <span class="a-span">{{ proyecto.tipo }}</span>
+        <br>
+        <span class="a-span">{{ proyecto.anio }}</span>
+      </span>
+      <div class="carousel__img-wrap">
+        <img
+          src="/assets/images/landing/{{ proyecto.imagen_landing }}"
+          alt="{{ proyecto.title }}"
+        >
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>

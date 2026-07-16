@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}zarroca</title>
+  <meta name="description" content="{% if page.descripcion %}{{ page.descripcion }}{% else %}Portafolio de José María Zarroca, estudiante de arquitectura en Ciudad de México.{% endif %}">
+
+  <!-- Open Graph (para compartir en redes) -->
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} — {% endif %}zarroca">
+  <meta property="og:description" content="{% if page.descripcion %}{{ page.descripcion }}{% else %}Portafolio de José María Zarroca{% endif %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  {% if page.imagen_og %}
+  <meta property="og:image" content="{{ page.imagen_og | absolute_url }}">
+  {% endif %}
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/images/icons/LOGO BOLA.png" type="image/png">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  {% if page.css_extra %}
+  <link rel="stylesheet" href="/assets/css/{{ page.css_extra }}">
+  {% endif %}
+</head>
+<body class="{% if page.body_class %}{{ page.body_class }}{% endif %}">
+
+  {% include header.html %}
+
+  <main class="page-content">
+    {{ content }}
+  </main>
+
+  <!-- JS global -->
+  <script src="/assets/js/main.js"></script>
+  {% if page.js_extra %}
+  <script src="/assets/js/{{ page.js_extra }}"></script>
+  {% endif %}
+
+  <!-- Menú móvil -->
+  <script>
+    var btnAbrir = document.getElementById('mobile-menu-t');
+    var btnCerrar = document.getElementById('mobile-menu-c');
+    var menu = document.getElementById('menu');
+    if (btnAbrir) {
+      btnAbrir.addEventListener('click', function() {
+        menu.style.display = 'block';
+        btnCerrar.style.display = 'block';
+        btnAbrir.style.display = 'none';
+      });
+      btnCerrar.addEventListener('click', function() {
+        menu.style.display = 'none';
+        btnCerrar.style.display = 'none';
+        btnAbrir.style.display = 'block';
+      });
+    }
+  </script>
+
+</body>
+</html>

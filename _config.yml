@@ -1,0 +1,24 @@
+title: zarroca
+description: Portafolio de José María Zarroca
+baseurl: ""
+url: "https://zarroca.net"
+
+# Excluir archivos innecesarios
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Colecciones
+collections:
+  projects:
+    output: true
+    permalink: /p/:name/
+
+# Valores por defecto
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "proyecto-estandar"

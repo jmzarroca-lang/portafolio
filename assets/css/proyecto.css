@@ -1,0 +1,194 @@
+/* ============================================
+   PROYECTO — Layout horizontal con sidebar fija
+   ============================================ */
+
+.proyecto-wrapper {
+  display: flex;
+  height: calc(100vh - 5rem); /* resta el header */
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Sidebar fija izquierda --- */
+.proyecto-sidebar {
+  width: 220px;
+  min-width: 220px;
+  padding: 2rem 1.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: var(--blanco);
+  z-index: 10;
+  border-right: none;
+  position: relative;
+}
+
+/* Línea vertical sutil que separa sidebar del contenido */
+.proyecto-sidebar::after {
+  content: '';
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  bottom: 2rem;
+  width: 1px;
+  background: #e8e8e8;
+}
+
+.proyecto-titulo-grande {
+  font-family: var(--fuente-cuerpo);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--negro);
+  letter-spacing: 0.04em;
+}
+
+.proyecto-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.proyecto-meta__nombre {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.proyecto-meta__tipo,
+.proyecto-meta__año {
+  font-size: 0.78rem;
+  font-weight: 300;
+}
+
+.proyecto-colaboradores {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.proyecto-colaboradores span {
+  font-size: 0.78rem;
+  font-weight: 300;
+}
+
+.proyecto-nota {
+  font-size: 0.75rem;
+  color: var(--gris-claro);
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+/* --- Área de scroll horizontal --- */
+.proyecto-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
+  padding: 2rem 3rem;
+  gap: 4rem;
+}
+
+.proyecto-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- Bloques de contenido --- */
+.proyecto-bloque {
+  flex-shrink: 0;
+}
+
+.proyecto-bloque--texto {
+  width: 420px;
+  font-size: var(--tamaño-cuerpo);
+  line-height: 1.75;
+  color: var(--negro);
+  font-weight: 300;
+}
+
+.proyecto-bloque--texto p {
+  margin-bottom: 1.2em;
+}
+
+.proyecto-bloque--texto p:last-child {
+  margin-bottom: 0;
+}
+
+/* Hero para proyecto especial */
+.proyecto-bloque--hero {
+  width: auto;
+  height: calc(100vh - 9rem);
+  display: flex;
+  align-items: center;
+}
+
+.proyecto-hero__img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* --- Galería de imágenes --- */
+.proyecto-galeria {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  flex-shrink: 0;
+}
+
+.proyecto-galeria__item {
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Variación de tamaños para dar ritmo visual */
+.proyecto-galeria__item.size-normal {
+  height: calc(100vh - 12rem);
+  width: auto;
+}
+
+.proyecto-galeria__item.size-grande {
+  height: calc(100vh - 8rem);
+  width: auto;
+}
+
+.proyecto-galeria__item.size-pequeño {
+  height: calc(100vh - 16rem);
+  width: auto;
+}
+
+.proyecto-galeria__item img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.proyecto-galeria__item img:hover {
+  transform: scale(1.02);
+}
+
+/* --- Barra de progreso --- */
+.proyecto-progreso {
+  position: fixed;
+  bottom: 0;
+  left: 220px; /* alineada con el contenido, no con la sidebar */
+  right: 0;
+  height: 3px;
+  background: #e8e8e8;
+  z-index: 50;
+}
+
+.proyecto-progreso__barra {
+  height: 100%;
+  width: 0%;
+  background: var(--rojo);
+  transition: width 0.1s linear;
+}
