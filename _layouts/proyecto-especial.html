@@ -1,20 +1,17 @@
 ---
 layout: base
+body_class: pagina-proyecto
 css_extra: proyecto.css
 js_extra: proyecto.js
 ---
 <div class="proyecto-wrapper proyecto-wrapper--especial">
-
-  <!-- Columna fija izquierda -->
   <aside class="proyecto-sidebar">
     <h1 class="proyecto-titulo-grande u-mayus">{{ page.titulo_corto }}</h1>
-
     <div class="proyecto-meta">
       <span class="proyecto-meta__nombre u-rojo">{{ page.title }}</span>
       <span class="proyecto-meta__tipo u-rojo">{{ page.tipo }}</span>
       <span class="proyecto-meta__año u-rojo">{{ page.anio }}</span>
     </div>
-
     {% if page.colaboradores %}
     <div class="proyecto-colaboradores">
       {% for c in page.colaboradores %}
@@ -22,16 +19,12 @@ js_extra: proyecto.js
       {% endfor %}
     </div>
     {% endif %}
-
     {% if page.nota %}
     <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
     {% endif %}
   </aside>
 
-  <!-- Contenido horizontal -->
   <div class="proyecto-scroll" id="proyecto-scroll">
-
-    <!-- Imagen hero -->
     {% if page.imagen_hero %}
     <div class="proyecto-bloque proyecto-bloque--hero">
       <img
@@ -42,12 +35,10 @@ js_extra: proyecto.js
     </div>
     {% endif %}
 
-    <!-- Texto principal -->
     <div class="proyecto-bloque proyecto-bloque--texto">
       {{ content }}
     </div>
 
-    <!-- Galería de imágenes (alternando con bloques de texto si los hay) -->
     {% if page.secciones %}
       {% for seccion in page.secciones %}
         {% if seccion.tipo == 'texto' %}
@@ -69,12 +60,9 @@ js_extra: proyecto.js
         {% endif %}
       {% endfor %}
     {% endif %}
+  </div>
 
-  </div><!-- fin proyecto-scroll -->
-
-  <!-- Barra de progreso -->
   <div class="proyecto-progreso">
     <div class="proyecto-progreso__barra" id="barra-progreso"></div>
   </div>
-
-</div><!-- fin proyecto-wrapper -->
+</div>

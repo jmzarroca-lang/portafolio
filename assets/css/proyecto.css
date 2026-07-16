@@ -1,29 +1,58 @@
 /* ============================================
-   PROYECTO — Layout horizontal con sidebar fija
+   PROYECTO — Variables propias de este componente
+   (style.css no define variables globales, así que
+   las declaramos aquí para no depender de nada externo)
    ============================================ */
-
-.proyecto-wrapper {
-  display: flex;
-  height: calc(100vh - 5rem); /* resta el header */
-  overflow: hidden;
-  position: relative;
+.pagina-proyecto {
+  --rojo: #cd5655;
+  --negro: #1a1a1a;
+  --blanco: #ffffff;
+  --gris-claro: #b1b1af;
 }
 
-/* --- Sidebar fija izquierda --- */
+/* Utilidades usadas en los layouts */
+.pagina-proyecto .u-rojo {
+  color: var(--rojo);
+  display: block;
+}
+.pagina-proyecto .u-mayus {
+  text-transform: uppercase;
+}
+
+/* Altura real del header fijo del sitio: 18px + 45px = 63px */
+.pagina-proyecto .page-content {
+  padding-top: 63px;
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ============================================
+   Wrapper general — sidebar flotante + scroll debajo
+   ============================================ */
+.proyecto-wrapper {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 63px);
+  overflow: hidden;
+}
+
+/* --- Sidebar fija, flotando SOBRE el contenido --- */
 .proyecto-sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 220px;
-  min-width: 220px;
+  height: 100%;
   padding: 2rem 1.5rem 2rem 2rem;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   background: var(--blanco);
   z-index: 10;
-  border-right: none;
-  position: relative;
+  text-align: left;
 }
-
-/* Línea vertical sutil que separa sidebar del contenido */
 .proyecto-sidebar::after {
   content: '';
   position: absolute;
@@ -35,12 +64,13 @@
 }
 
 .proyecto-titulo-grande {
-  font-family: var(--fuente-cuerpo);
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 500;
-  line-height: 1.2;
+  font-family: "Rubik", system-ui;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
   color: var(--negro);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
+  margin: 0;
 }
 
 .proyecto-meta {
@@ -48,15 +78,13 @@
   flex-direction: column;
   gap: 0.2rem;
 }
-
 .proyecto-meta__nombre {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 400;
 }
-
 .proyecto-meta__tipo,
 .proyecto-meta__año {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 300;
 }
 
@@ -65,34 +93,33 @@
   flex-direction: column;
   gap: 0.15rem;
 }
-
 .proyecto-colaboradores span {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 300;
 }
 
 .proyecto-nota {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--gris-claro);
   line-height: 1.5;
   margin-top: auto;
+  font-style: italic;
 }
 
-/* --- Área de scroll horizontal --- */
+/* --- Área de scroll: ancho completo, pasa por DEBAJO del sidebar --- */
 .proyecto-scroll {
-  flex: 1;
+  height: 100%;
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
   overflow-x: scroll;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
   padding: 2rem 3rem;
   gap: 4rem;
 }
-
 .proyecto-scroll::-webkit-scrollbar {
   display: none;
 }
@@ -100,20 +127,18 @@
 /* --- Bloques de contenido --- */
 .proyecto-bloque {
   flex-shrink: 0;
+  text-align: left;
 }
-
 .proyecto-bloque--texto {
   width: 420px;
-  font-size: var(--tamaño-cuerpo);
+  font-size: 15px;
   line-height: 1.75;
   color: var(--negro);
   font-weight: 300;
 }
-
 .proyecto-bloque--texto p {
-  margin-bottom: 1.2em;
+  margin: 0 0 1.2em 0;
 }
-
 .proyecto-bloque--texto p:last-child {
   margin-bottom: 0;
 }
@@ -121,16 +146,16 @@
 /* Hero para proyecto especial */
 .proyecto-bloque--hero {
   width: auto;
-  height: calc(100vh - 9rem);
+  height: calc(100vh - 63px - 4rem);
   display: flex;
   align-items: center;
 }
-
 .proyecto-hero__img {
   height: 100%;
   width: auto;
   max-width: none;
   object-fit: cover;
+  display: block;
 }
 
 /* --- Galería de imágenes --- */
@@ -141,54 +166,62 @@
   gap: 2rem;
   flex-shrink: 0;
 }
-
 .proyecto-galeria__item {
   flex-shrink: 0;
   overflow: hidden;
 }
-
-/* Variación de tamaños para dar ritmo visual */
-.proyecto-galeria__item.size-normal {
-  height: calc(100vh - 12rem);
-  width: auto;
-}
-
-.proyecto-galeria__item.size-grande {
-  height: calc(100vh - 8rem);
-  width: auto;
-}
-
-.proyecto-galeria__item.size-pequeño {
-  height: calc(100vh - 16rem);
-  width: auto;
-}
-
 .proyecto-galeria__item img {
   height: 100%;
   width: auto;
   max-width: none;
   object-fit: cover;
+  display: block;
   transition: transform 0.4s ease;
 }
-
 .proyecto-galeria__item img:hover {
   transform: scale(1.02);
+}
+
+/* Variación sutil de tamaños para dar ritmo visual */
+.proyecto-galeria__item.size-normal {
+  height: calc(100vh - 63px - 8rem);
+}
+.proyecto-galeria__item.size-grande {
+  height: calc(100vh - 63px - 5rem);
+}
+.proyecto-galeria__item.size-pequeño {
+  height: calc(100vh - 63px - 11rem);
 }
 
 /* --- Barra de progreso --- */
 .proyecto-progreso {
   position: fixed;
   bottom: 0;
-  left: 220px; /* alineada con el contenido, no con la sidebar */
+  left: 220px;
   right: 0;
   height: 3px;
   background: #e8e8e8;
   z-index: 50;
 }
-
 .proyecto-progreso__barra {
   height: 100%;
   width: 0%;
   background: var(--rojo);
   transition: width 0.1s linear;
+}
+
+@media screen and (max-width: 600px) {
+  .proyecto-sidebar {
+    width: 160px;
+    padding: 1.2rem 1rem 1.2rem 1.2rem;
+  }
+  .proyecto-titulo-grande {
+    font-size: 1.2rem;
+  }
+  .proyecto-bloque--texto {
+    width: 280px;
+  }
+  .proyecto-progreso {
+    left: 160px;
+  }
 }
