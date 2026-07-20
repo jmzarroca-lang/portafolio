@@ -6,7 +6,6 @@ js_extra: proyecto.js
 ---
 <div class="proyecto-wrapper">
   <aside class="proyecto-sidebar">
-    <h1 class="proyecto-titulo-grande u-mayus">{{ page.titulo_corto }}</h1>
     <div class="proyecto-meta">
       <span class="proyecto-meta__nombre u-rojo">{{ page.title }}</span>
       <span class="proyecto-meta__tipo u-rojo">{{ page.tipo }}</span>
@@ -19,9 +18,15 @@ js_extra: proyecto.js
       {% endfor %}
     </div>
     {% endif %}
-    {% if page.nota %}
-    <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
-    {% endif %}
+
+    <div class="proyecto-sidebar-footer">
+      {% if page.nota %}
+      <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
+      {% endif %}
+      <button type="button" id="btn-volver-inicio" class="proyecto-volver project-a u-rojo">
+        <span class="a-span">Volver al principio</span>
+      </button>
+    </div>
   </aside>
 
   <div class="proyecto-scroll" id="proyecto-scroll">
@@ -30,9 +35,8 @@ js_extra: proyecto.js
     </div>
 
     {% if page.imagenes %}
-    <div class="proyecto-galeria">
       {% for img in page.imagenes %}
-      <div class="proyecto-galeria__item {% cycle 'size-normal', 'size-grande', 'size-normal', 'size-pequeño' %}">
+      <div class="proyecto-foto">
         <img
           src="/assets/images/proyectos/{{ page.carpeta }}/{{ img.archivo }}"
           alt="{{ img.descripcion | default: page.title }}"
@@ -40,7 +44,6 @@ js_extra: proyecto.js
         >
       </div>
       {% endfor %}
-    </div>
     {% endif %}
   </div>
 

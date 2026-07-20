@@ -1,7 +1,5 @@
 /* ============================================
    PROYECTO — Variables propias de este componente
-   (style.css no define variables globales, así que
-   las declaramos aquí para no depender de nada externo)
    ============================================ */
 .pagina-proyecto {
   --rojo: #cd5655;
@@ -10,41 +8,46 @@
   --gris-claro: #b1b1af;
 }
 
-/* Utilidades usadas en los layouts */
-.pagina-proyecto .u-rojo {
+.u-rojo {
   color: var(--rojo);
   display: block;
 }
-.pagina-proyecto .u-mayus {
+.u-mayus {
   text-transform: uppercase;
 }
 
-/* Altura real del header fijo del sitio: 18px + 45px = 63px */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 .pagina-proyecto .page-content {
   padding-top: 63px;
   margin: 0;
   height: 100vh;
+  box-sizing: border-box;
   overflow: hidden;
 }
 
-/* ============================================
-   Wrapper general — sidebar flotante + scroll debajo
-   ============================================ */
 .proyecto-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100vh - 63px);
+  margin-top: max(0px, calc(25vh - 63px));
+  height: 75vh;
   overflow: hidden;
 }
 
-/* --- Sidebar fija, flotando SOBRE el contenido --- */
+/* --- PUNTO 1: el 50% izquierdo se divide en 3 partes iguales.
+   La viñeta ocupa el primer tercio (50vw/3). --- */
 .proyecto-sidebar {
   position: absolute;
   top: 0;
   left: 0;
-  width: 220px;
+  width: calc(50vw / 3);
+  min-width: 180px;
   height: 100%;
-  padding: 2rem 1.5rem 2rem 2rem;
+  padding: 2rem 1.5rem 2rem 25px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -52,40 +55,23 @@
   background: var(--blanco);
   z-index: 10;
   text-align: left;
-}
-.proyecto-sidebar::after {
-  content: '';
-  position: absolute;
-  top: 2rem;
-  right: 0;
-  bottom: 2rem;
-  width: 1px;
-  background: #e8e8e8;
+  font-weight: 400;
 }
 
-.proyecto-titulo-grande {
-  font-family: "Rubik", system-ui;
-  font-size: clamp(1.4rem, 2.4vw, 2rem);
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--negro);
-  letter-spacing: 0.01em;
-  margin: 0;
-}
-
+/* --- PUNTO 2: título del proyecto un poco más grande --- */
 .proyecto-meta {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
 .proyecto-meta__nombre {
-  font-size: 0.85rem;
+  font-size: 17px;
   font-weight: 400;
 }
 .proyecto-meta__tipo,
 .proyecto-meta__año {
-  font-size: 0.82rem;
-  font-weight: 300;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .proyecto-colaboradores {
@@ -94,19 +80,52 @@
   gap: 0.15rem;
 }
 .proyecto-colaboradores span {
-  font-size: 0.82rem;
-  font-weight: 300;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* Contenedor inferior: nota + botón, anclado abajo */
+.proyecto-sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
 }
 
 .proyecto-nota {
-  font-size: 0.78rem;
+  font-size: 13px;
   color: var(--gris-claro);
   line-height: 1.5;
-  margin-top: auto;
   font-style: italic;
+  font-weight: 400;
+  margin: 0;
 }
 
-/* --- Área de scroll: ancho completo, pasa por DEBAJO del sidebar --- */
+/* --- PUNTO 3: botón "Volver al principio" ---
+   Reutiliza .project-a / .a-span (ya definidos en el CSS
+   global del sitio) para el mismo efecto de subrayado al
+   pasar el mouse que el resto de los links. Oculto por
+   defecto; el JS lo muestra al alejarse del inicio. */
+.proyecto-volver {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: "Rubik", system-ui;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.proyecto-volver.visible {
+  display: inline-block;
+  width: fit-content;
+}
+
+/* --- Área de scroll ---
+   La foto sigue arrancando exacto en 50vw:
+   ancho-viñeta (50vw/3) + ancho-texto + 64px (gap) = 50vw
+   → ancho-texto = 50vw - 50vw/3 - 64px = (100vw/3) - 64px --- */
 .proyecto-scroll {
   height: 100%;
   display: flex;
@@ -117,21 +136,21 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   box-sizing: border-box;
-  padding: 2rem 3rem;
+  padding: 2rem 25px 2rem calc(50vw / 3);
   gap: 4rem;
 }
 .proyecto-scroll::-webkit-scrollbar {
   display: none;
 }
 
-/* --- Bloques de contenido --- */
 .proyecto-bloque {
   flex-shrink: 0;
   text-align: left;
 }
 .proyecto-bloque--texto {
-  width: 420px;
-  font-size: 15px;
+  width: calc((100vw / 3) - 4rem);
+  min-width: 280px;
+  font-size: 14px;
   line-height: 1.75;
   color: var(--negro);
   font-weight: 300;
@@ -143,65 +162,27 @@
   margin-bottom: 0;
 }
 
-/* Hero para proyecto especial */
-.proyecto-bloque--hero {
-  width: auto;
-  height: calc(100vh - 63px - 4rem);
-  display: flex;
-  align-items: center;
-}
-.proyecto-hero__img {
-  height: 100%;
-  width: auto;
-  max-width: none;
-  object-fit: cover;
-  display: block;
-}
-
-/* --- Galería de imágenes --- */
-.proyecto-galeria {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2rem;
+.proyecto-foto {
   flex-shrink: 0;
-}
-.proyecto-galeria__item {
-  flex-shrink: 0;
+  height: 65vh;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
 }
-.proyecto-galeria__item img {
+.proyecto-foto img {
+  width: 100%;
   height: 100%;
-  width: auto;
-  max-width: none;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
-}
-.proyecto-galeria__item img:hover {
-  transform: scale(1.02);
 }
 
-/* Variación sutil de tamaños para dar ritmo visual */
-.proyecto-galeria__item.size-normal {
-  height: calc(100vh - 63px - 8rem);
-}
-.proyecto-galeria__item.size-grande {
-  height: calc(100vh - 63px - 5rem);
-}
-.proyecto-galeria__item.size-pequeño {
-  height: calc(100vh - 63px - 11rem);
-}
-
-/* --- Barra de progreso --- */
 .proyecto-progreso {
   position: fixed;
   bottom: 0;
-  left: 220px;
+  left: 0;
   right: 0;
-  height: 3px;
+  height: 6px;
   background: #e8e8e8;
-  z-index: 50;
+  z-index: 20;
 }
 .proyecto-progreso__barra {
   height: 100%;
@@ -212,16 +193,12 @@
 
 @media screen and (max-width: 600px) {
   .proyecto-sidebar {
-    width: 160px;
-    padding: 1.2rem 1rem 1.2rem 1.2rem;
+    width: 185px;
   }
-  .proyecto-titulo-grande {
-    font-size: 1.2rem;
+  .proyecto-scroll {
+    padding-left: 210px;
   }
   .proyecto-bloque--texto {
     width: 280px;
-  }
-  .proyecto-progreso {
-    left: 160px;
   }
 }

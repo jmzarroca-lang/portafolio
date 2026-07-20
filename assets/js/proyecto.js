@@ -1,29 +1,79 @@
 /* ============================================
-   ZARROCA — Proyecto: scroll horizontal + progreso
+   ZARROCA — Proyecto: scroll horizontal con snap + progreso
    ============================================ */
 
 (function () {
   const scroll = document.getElementById('proyecto-scroll');
   const barra = document.getElementById('barra-progreso');
+  const btnVolver = document.getElementById('btn-volver-inicio');
 
   if (!scroll) return;
 
-  /* --- Convertir scroll vertical en horizontal ---
-     - Rueda del mouse (deltaY)
-     - Trackpad vertical (deltaY)
-     - Trackpad horizontal (deltaX, se respeta directamente)
-  */
+  const stops = Array.from(scroll.children);
+  if (stops.length === 0) return;
+
+  const OFFSET = stops[0].offsetLeft;
+
+  function targetScrollLeft(index) {
+    return Math.max(0, stops[index].offsetLeft - OFFSET);
+  }
+
+  function closestIndex() {
+    const posAbsoluta = scroll.scrollLeft + OFFSET;
+    let closest = 0;
+    let minDiff = Infinity;
+    stops.forEach(function (item, i) {
+      const diff = Math.abs(item.offsetLeft - posAbsoluta);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = i;
+      }
+    });
+    return closest;
+  }
+
+  let locked = false;
+  const LOCK_MS = 500;
+
+  function goToStep(direction) {
+    if (locked) return;
+    locked = true;
+    const current = closestIndex();
+    let targetIndex = current + direction;
+    if (targetIndex < 0) targetIndex = 0;
+    if (targetIndex >= stops.length) targetIndex = stops.length - 1;
+    scroll.scrollTo({ left: targetScrollLeft(targetIndex), behavior: 'smooth' });
+    setTimeout(function () { locked = false; }, LOCK_MS);
+  }
+
   scroll.addEventListener('wheel', function (e) {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
     e.preventDefault();
-    scroll.scrollLeft += e.deltaY * 1.2;
+    if (Math.abs(e.deltaY) < 2) return;
+    goToStep(e.deltaY > 0 ? 1 : -1);
   }, { passive: false });
 
-  /* --- Teclado: flechas izquierda/derecha --- */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowRight') scroll.scrollLeft += 120;
-    if (e.key === 'ArrowLeft') scroll.scrollLeft -= 120;
+    if (e.key === 'ArrowRight') goToStep(1);
+    if (e.key === 'ArrowLeft') goToStep(-1);
   });
+
+  /* --- Botón "Volver al principio" ---
+     Visible solo cuando nos alejamos del texto inicial. */
+  if (btnVolver) {
+    btnVolver.addEventListener('click', function () {
+      scroll.scrollTo({ left: 0, behavior: 'smooth' });
+    });
+  }
+
+  function actualizarBotonVolver() {
+    if (!btnVolver) return;
+    if (scroll.scrollLeft > 10) {
+      btnVolver.classList.add('visible');
+    } else {
+      btnVolver.classList.remove('visible');
+    }
+  }
 
   /* --- Barra de progreso --- */
   function actualizarProgreso() {
@@ -33,6 +83,11 @@
     barra.style.width = porcentaje + '%';
   }
 
-  scroll.addEventListener('scroll', actualizarProgreso, { passive: true });
+  scroll.addEventListener('scroll', function () {
+    actualizarProgreso();
+    actualizarBotonVolver();
+  }, { passive: true });
+
   actualizarProgreso();
+  actualizarBotonVolver();
 })();
