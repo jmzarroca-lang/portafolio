@@ -22,3 +22,5 @@ defaults:
       type: "projects"
     values:
       layout: "proyecto-estandar"
+      css_extra: "proyecto.css"
+      js_extra: "proyecto.js"
