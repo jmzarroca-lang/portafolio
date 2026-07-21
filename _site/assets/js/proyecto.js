@@ -6,6 +6,7 @@
   const scroll = document.getElementById('proyecto-scroll');
   const barra = document.getElementById('barra-progreso');
   const btnVolver = document.getElementById('btn-volver-inicio');
+  const flecha = document.getElementById('flecha-carrusel');
 
   if (!scroll) return;
 
@@ -58,8 +59,7 @@
     if (e.key === 'ArrowLeft') goToStep(-1);
   });
 
-  /* --- Botón "Volver al principio" ---
-     Visible solo cuando nos alejamos del texto inicial. */
+  /* --- Botón "Volver al principio" --- */
   if (btnVolver) {
     btnVolver.addEventListener('click', function () {
       scroll.scrollTo({ left: 0, behavior: 'smooth' });
@@ -75,6 +75,32 @@
     }
   }
 
+  /* --- Flecha: salta a la primera foto; se oculta tras usarse --- */
+  if (flecha && stops.length > 1) {
+    flecha.addEventListener('click', function () {
+      scroll.scrollTo({ left: targetScrollLeft(1), behavior: 'smooth' });
+    });
+  }
+
+  function actualizarFlecha() {
+    if (!flecha) return;
+    if (scroll.scrollLeft > 10) {
+      flecha.classList.add('oculta');
+    } else {
+      flecha.classList.remove('oculta');
+    }
+  }
+
+  /* --- Click en una foto chica: crece a tamaño completo.
+     Las que ya son .tamano-completo no necesitan click.
+     Segundo click en una foto ampliada la vuelve a achicar. --- */
+  const fotos = Array.from(scroll.querySelectorAll('.proyecto-foto:not(.tamano-completo)'));
+  fotos.forEach(function (foto) {
+    foto.addEventListener('click', function () {
+      foto.classList.toggle('expandida');
+    });
+  });
+
   /* --- Barra de progreso --- */
   function actualizarProgreso() {
     if (!barra) return;
@@ -86,8 +112,10 @@
   scroll.addEventListener('scroll', function () {
     actualizarProgreso();
     actualizarBotonVolver();
+    actualizarFlecha();
   }, { passive: true });
 
   actualizarProgreso();
   actualizarBotonVolver();
+  actualizarFlecha();
 })();

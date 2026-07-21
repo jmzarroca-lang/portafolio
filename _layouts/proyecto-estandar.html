@@ -23,8 +23,8 @@ js_extra: proyecto.js
       {% if page.nota %}
       <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
       {% endif %}
-      <button type="button" id="btn-volver-inicio" class="proyecto-volver project-a u-rojo">
-        <span class="a-span">Volver al principio</span>
+      <button type="button" id="btn-volver-inicio" class="proyecto-volver project-a">
+        <span class="a-span">&larr; Volver al principio</span>
       </button>
     </div>
   </aside>
@@ -36,7 +36,7 @@ js_extra: proyecto.js
 
     {% if page.imagenes %}
       {% for img in page.imagenes %}
-      <div class="proyecto-foto">
+      <div class="proyecto-foto{% if forloop.first or img.completa %} tamano-completo{% endif %}">
         <img
           src="/assets/images/proyectos/{{ page.carpeta }}/{{ img.archivo }}"
           alt="{{ img.descripcion | default: page.title }}"
@@ -46,6 +46,8 @@ js_extra: proyecto.js
       {% endfor %}
     {% endif %}
   </div>
+
+  <img id="flecha-carrusel" class="flecha-carrusel" src="/assets/images/icons/flecha_carrusel.png" alt="Ver imágenes">
 
   <div class="proyecto-progreso">
     <div class="proyecto-progreso__barra" id="barra-progreso"></div>
