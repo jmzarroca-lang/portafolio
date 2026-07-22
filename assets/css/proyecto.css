@@ -39,6 +39,25 @@ html, body {
   overflow: hidden;
 }
 
+/* --- Variante para proyecto-especial: el CONTENEDOR arranca
+   casi pegado al header (para que el héroe pueda usar esa
+   altura completa), pero el resto de los elementos (viñeta,
+   texto, fotos) se empujan hacia abajo con --desfase-cuarto
+   para seguir respetando la línea del 25% — solo el héroe
+   usa la altura completa del contenedor. --- */
+.proyecto-wrapper--especial {
+  margin-top: 25px;
+  height: calc(100vh - 63px - 25px);
+  --desfase-cuarto: max(0px, calc(25vh - 88px));
+}
+.proyecto-wrapper--especial .proyecto-sidebar {
+  padding-top: calc(2rem + var(--desfase-cuarto));
+}
+.proyecto-wrapper--especial .proyecto-bloque--texto,
+.proyecto-wrapper--especial .proyecto-foto {
+  margin-top: var(--desfase-cuarto);
+}
+
 .proyecto-sidebar {
   position: absolute;
   top: 0;
@@ -55,6 +74,16 @@ html, body {
   z-index: 10;
   text-align: left;
   font-weight: 400;
+}
+
+/* --- Título corto: solo lo usa proyecto-especial --- */
+.proyecto-titulo-grande {
+  font-family: "Rubik", system-ui;
+  font-size: 1.53rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  margin: 0;
 }
 
 .proyecto-meta {
@@ -96,7 +125,7 @@ html, body {
   line-height: 1.5;
   font-style: italic;
   font-weight: 400;
-  margin: 0;
+  margin: 1.5em 0 0 0;
 }
 
 .proyecto-volver {
@@ -141,6 +170,26 @@ html, body {
   flex-shrink: 0;
   text-align: left;
 }
+
+/* --- Héroe: solo en proyecto-especial, primer elemento del
+   carrusel, ocupa toda la banda de contenido (75vh) --- */
+/* --- Héroe: solo en proyecto-especial, primer elemento del
+   carrusel. Ocupa toda la banda de contenido (75vh) y, como
+   mínimo, todo el ancho visible restante (pantalla completa
+   menos la viñeta) — así domina la primera pantalla en vez
+   de aparecer "apachurrado" junto al texto. --- */
+.proyecto-bloque--hero {
+  height: 100%;
+  width: calc(100vw - (50vw / 3));
+  flex-shrink: 0;
+}
+.proyecto-bloque--hero img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .proyecto-bloque--texto {
   width: calc((100vw / 3) - 4rem);
   min-width: 280px;
@@ -157,22 +206,19 @@ html, body {
 }
 
 /* --- Fotos: la mitad de alto por defecto (32.5vh).
+   El alto queda fijo; el ancho se calcula solo, según la
+   proporción REAL de cada foto (sin recortar ni forzar 4:3).
    Crecen a 65vh (el tamaño "completo") con una simple
-   transición de height — sin position:fixed, sin FLIP,
-   sin lightbox. Al estar dentro del flex normal, las
-   demás fotos simplemente se acomodan alrededor. --- */
+   transición de height. --- */
 .proyecto-foto {
   flex-shrink: 0;
   height: 32.5vh;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
   cursor: zoom-in;
   transition: height 0.4s ease;
 }
 .proyecto-foto img {
-  width: 100%;
   height: 100%;
-  object-fit: cover;
+  width: auto;
   display: block;
 }
 

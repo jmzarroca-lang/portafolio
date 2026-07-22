@@ -75,10 +75,16 @@
     }
   }
 
-  /* --- Flecha: salta a la primera foto; se oculta tras usarse --- */
-  if (flecha && stops.length > 1) {
+  /* --- Flecha: salta a la primera FOTO real (no al índice 1
+     a secas, porque en proyecto-especial hay un héroe antes
+     del texto) --- */
+  const indicePrimeraFoto = stops.findIndex(function (el) {
+    return el.classList.contains('proyecto-foto');
+  });
+
+  if (flecha && indicePrimeraFoto !== -1) {
     flecha.addEventListener('click', function () {
-      scroll.scrollTo({ left: targetScrollLeft(1), behavior: 'smooth' });
+      scroll.scrollTo({ left: targetScrollLeft(indicePrimeraFoto), behavior: 'smooth' });
     });
   }
 

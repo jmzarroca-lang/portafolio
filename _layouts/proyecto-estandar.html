@@ -20,9 +20,6 @@ js_extra: proyecto.js
     {% endif %}
 
     <div class="proyecto-sidebar-footer">
-      {% if page.nota %}
-      <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
-      {% endif %}
       <button type="button" id="btn-volver-inicio" class="proyecto-volver project-a">
         <span class="a-span">&larr; Volver al principio</span>
       </button>
@@ -30,8 +27,19 @@ js_extra: proyecto.js
   </aside>
 
   <div class="proyecto-scroll" id="proyecto-scroll">
+    {% assign partes = content | split: '<!--seccion-->' %}
+    {% assign hay_texto2 = false %}
+    {% if page.texto_2_despues_de_foto and partes[1] %}
+      {% assign hay_texto2 = true %}
+    {% endif %}
+
     <div class="proyecto-bloque proyecto-bloque--texto">
-      {{ content }}
+      {{ partes[0] }}
+      {% unless hay_texto2 %}
+        {% if page.nota %}
+        <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
+        {% endif %}
+      {% endunless %}
     </div>
 
     {% if page.imagenes %}
@@ -43,6 +51,14 @@ js_extra: proyecto.js
           loading="lazy"
         >
       </div>
+      {% if hay_texto2 and forloop.index == page.texto_2_despues_de_foto %}
+      <div class="proyecto-bloque proyecto-bloque--texto">
+        {{ partes[1] }}
+        {% if page.nota %}
+        <p class="proyecto-nota"><em>{{ page.nota }}</em></p>
+        {% endif %}
+      </div>
+      {% endif %}
       {% endfor %}
     {% endif %}
   </div>
